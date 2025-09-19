@@ -133,6 +133,17 @@
                             class="w-full h-48 form-input rounded-md px-3 py-2 transition font-mono text-sm resize-none"
                         ></textarea>
                     </div>
+                    <div class="flex items-center text-gray-400">
+                        <span class="flex-grow border-t border-[#30363d]"></span>
+                        <span class="px-3 text-xs uppercase">Or</span>
+                        <span class="flex-grow border-t border-[#30363d]"></span>
+                    </div>
+
+                    <input type="file" id="fileInput" class="hidden" accept=".svg" />
+                    <button id="uploadButton" class="w-full btn-secondary rounded-md px-4 py-2 text-sm font-semibold flex items-center justify-center gap-2 hover:border-gray-500 transition-colors">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Upload SVG File
+                    </button>
                      <button
                         id="convertButton"
                         class="w-full btn-primary rounded-md px-4 py-3 text-sm font-semibold text-white shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0d1117] focus:ring-blue-500"
@@ -185,6 +196,8 @@
             const iconNameInput = document.getElementById('iconName');
             const svgInput = document.getElementById('svgInput');
             const convertButton = document.getElementById('convertButton');
+            const uploadButton = document.getElementById('uploadButton');
+            const fileInput = document.getElementById('fileInput');
             const errorMessage = document.getElementById('error-message');
             const svgPreviewContainer = document.getElementById('svg-preview-container');
             const outputContainer = document.getElementById('output-container');
@@ -314,7 +327,7 @@ Follow these rules STRICTLY:
 7.  **Imports:** Start the file with \`import React from 'react';\`.`;
                 
                 const userQuery = `Icon Name: "${iconName}"\n\nSVG Code:\n\`\`\`xml\n${svgContent}\n\`\`\``;
-                const apiKey = "AIzaSyAv4hnQi6OC_KojYx6KClJcTmvYoBHY98c"; // Leave as-is
+                const apiKey = "AIzaSyAv4hnQi6OC_KojYx6KClJcTmvYoBHY98c"; // API Key Added
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 
                 const payload = {
@@ -421,6 +434,10 @@ Follow these rules STRICTLY:
             // --- Event Listeners ---
             svgInput.addEventListener('input', updateSvgPreview);
             convertButton.addEventListener('click', callGeminiToConvert);
+            uploadButton.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (event) => {
+                handleFile(event.target.files[0]);
+            });
             copyButton.addEventListener('click', copyToClipboard);
             downloadButton.addEventListener('click', downloadFile);
             
@@ -430,3 +447,4 @@ Follow these rules STRICTLY:
     </script>
 </body>
 </html>
+
